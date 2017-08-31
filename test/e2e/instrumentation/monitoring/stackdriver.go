@@ -30,6 +30,7 @@ import (
 	"k8s.io/kubernetes/test/e2e/common"
 	"k8s.io/kubernetes/test/e2e/framework"
 	instrumentation "k8s.io/kubernetes/test/e2e/instrumentation/common"
+	"golang.org/x/oauth2"
 
 	gcm "google.golang.org/api/monitoring/v3"
 )
@@ -76,6 +77,19 @@ func testStackdriverMonitoring(f *framework.Framework, pods, allPodsCPU int, per
 
 	ctx := context.Background()
 	client, err := google.DefaultClient(ctx, gcm.CloudPlatformScope)
+
+
+	// Hack for running tests locally
+	// If this is your use case, create application default credentials:
+	// $ gcloud auth application-default login
+	// and uncomment following lines: (DON'T set the env var below)
+	/*ts, err := google.DefaultTokenSource(oauth2.NoContext)
+	framework.Logf("Couldn't get application default credentials, %v", err)
+	if err != nil {
+		framework.Failf("Error accessing application default credentials, %v", err)
+	}
+	client := oauth2.NewClient(oauth2.NoContext, ts)*/
+
 	gcmService, err := gcm.New(client)
 
 	// set this env var if accessing Stackdriver test endpoint (default is prod):
