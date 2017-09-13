@@ -259,7 +259,7 @@ var (
 			Name: "metrics-exposer-1",
 			Namespace: "default",
 			Labels: map[string]string{
-				"name": "metric-exposer",
+				"name": "metrics-exposer",
 			},
 		},
 		Spec: v1.PodSpec{
@@ -286,10 +286,10 @@ var (
 	}
 	MetricsExposerPod2 = &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "metrics-exposer-1",
+			Name: "metrics-exposer-2",
 			Namespace: "default",
 			Labels: map[string]string{
-				"name": "metric-exposer",
+				"name": "metrics-exposer",
 			},
 		},
 		Spec: v1.PodSpec{

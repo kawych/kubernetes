@@ -30,7 +30,6 @@ import (
 	"k8s.io/kubernetes/test/e2e/common"
 	"k8s.io/kubernetes/test/e2e/framework"
 	instrumentation "k8s.io/kubernetes/test/e2e/instrumentation/common"
-	"golang.org/x/oauth2"
 
 	gcm "google.golang.org/api/monitoring/v3"
 )

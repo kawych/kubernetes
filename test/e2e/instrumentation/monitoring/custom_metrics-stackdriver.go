@@ -92,20 +92,20 @@ func testAdapter(f *framework.Framework, kubeClient clientset.Interface, kubeAgg
 	if err != nil {
 		framework.Failf("Failed to create metric descriptor: %s", err)
 	}
-	defer cleanupDescriptors(gcmService, projectId)
+	//defer cleanupDescriptors(gcmService, projectId)
 
 	err = createAdapter(kubeClient, kubeAggrClient)
 	if err != nil {
 		framework.Failf("Failed to set up: %s", err)
 	}
-	defer cleanupAdapter(kubeClient, kubeAggrClient)
+	//defer cleanupAdapter(kubeClient, kubeAggrClient)
 
 	// Run application that exports the metric
 	err = createMetricExposerPod(kubeClient)
 	if err != nil {
-		framework.Failf("Failed to create metric-exposer pod: %s", err)
+		framework.Failf("Failed to create metrics-exposer pod: %s", err)
 	}
-	defer cleanupMetricExposerPod(kubeClient)
+	//defer cleanupMetricExposerPod(kubeClient)
 
 	// Wait a short amount of time to create a pod and export some metrics
 	time.Sleep(60 * time.Second)
@@ -127,7 +127,7 @@ func testAdapter(f *framework.Framework, kubeClient clientset.Interface, kubeAgg
 	if value.Value.Value() != MetricValue1 {
 		framework.Failf("Unexpected metric value for metric %s: expected %v but received %v", CustomMetricName, MetricValue1, value.Value)
 	}
-	filter, err := labels.NewRequirement("name", selection.Equals, []string{"metric-exporter"})
+	filter, err := labels.NewRequirement("name", selection.Equals, []string{"metrics-exposer"})
 	if err != nil {
 		framework.Failf("Couldn't create a label filter")
 	}
@@ -227,8 +227,8 @@ func cleanupDescriptors(service *gcm.Service, projectId string) {
 }
 
 func cleanupMetricExposerPod(cs clientset.Interface) {
-	_ = cs.Core().Pods("default").Delete("metric-exposer-1", &metav1.DeleteOptions{})
-	_ = cs.Core().Pods("default").Delete("metric-exposer-2", &metav1.DeleteOptions{})
+	_ = cs.Core().Pods("default").Delete("metrics-exposer-1", &metav1.DeleteOptions{})
+	_ = cs.Core().Pods("default").Delete("metrics-exposer-2", &metav1.DeleteOptions{})
 }
 
 func cleanupAdapter(cs clientset.Interface, cs2 kubeaggrcs.Interface) error {
